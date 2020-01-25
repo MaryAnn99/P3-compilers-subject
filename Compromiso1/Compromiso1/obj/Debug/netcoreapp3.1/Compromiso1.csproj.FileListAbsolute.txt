@@ -1,0 +1,11 @@
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\bin\Debug\netcoreapp3.1\Compromiso1.exe
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\bin\Debug\netcoreapp3.1\Compromiso1.deps.json
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\bin\Debug\netcoreapp3.1\Compromiso1.runtimeconfig.json
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\bin\Debug\netcoreapp3.1\Compromiso1.runtimeconfig.dev.json
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\bin\Debug\netcoreapp3.1\Compromiso1.dll
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\bin\Debug\netcoreapp3.1\Compromiso1.pdb
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\obj\Debug\netcoreapp3.1\Compromiso1.csprojAssemblyReference.cache
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\obj\Debug\netcoreapp3.1\Compromiso1.AssemblyInfoInputs.cache
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\obj\Debug\netcoreapp3.1\Compromiso1.AssemblyInfo.cs
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\obj\Debug\netcoreapp3.1\Compromiso1.dll
+C:\Users\marid\OneDrive\Escritorio\P3-compilers-subject\Compromiso1\Compromiso1\obj\Debug\netcoreapp3.1\Compromiso1.pdb

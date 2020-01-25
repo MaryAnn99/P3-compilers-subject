@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compromiso1", "Compromiso1\Compromiso1.csproj", "{578CD985-5EEC-4429-891C-DBB23F2977A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compromiso1", "Compromiso1\Compromiso1.csproj", "{578CD985-5EEC-4429-891C-DBB23F2977A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compromiso1.Tests", "Compromiso1.Tests\Compromiso1.Tests.csproj", "{AAFB2DE8-8764-46DF-A167-529DCC4BF5C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{578CD985-5EEC-4429-891C-DBB23F2977A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578CD985-5EEC-4429-891C-DBB23F2977A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{578CD985-5EEC-4429-891C-DBB23F2977A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAFB2DE8-8764-46DF-A167-529DCC4BF5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAFB2DE8-8764-46DF-A167-529DCC4BF5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAFB2DE8-8764-46DF-A167-529DCC4BF5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAFB2DE8-8764-46DF-A167-529DCC4BF5C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
