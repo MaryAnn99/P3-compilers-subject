@@ -154,11 +154,87 @@ namespace Compromiso1
                 "PYM", "QMA", "QMC", "TDG", "TEP", "THU", "TMA", "TPW", "TSA", "TSE", "TSS", "TTF", "UTAI" };
 
             bool lookingRecinto = true;
-            /*
+            bool lookingForFirstNumero = false;
+            bool lookingForSecondNumero = false;
+            bool lookingForCodigoAsignatura = false;
+            bool lookingForThreeLastDigits = false;
+            int cntNumero = 0;
+            StringBuilder stringBuilder = new StringBuilder();
             for(int i = 0; i < input.Length; i++)
             {
-                if(lookingRecinto )
-            } */
+                if (input[i] == '-')  
+                {
+                    if (lookingRecinto)
+                    {
+                        lookingRecinto = false;
+                        if (!recinto.Contains(stringBuilder.ToString()))
+                        {
+                            res = false;
+                            break;
+                        }
+                        lookingForFirstNumero = true;
+                    }
+                    if (lookingForFirstNumero)
+                    {
+                        lookingForFirstNumero = false;
+                        cntNumero = 0;
+                        lookingForSecondNumero = true;
+                    }
+                    if (lookingForSecondNumero)
+                    {
+                        lookingForSecondNumero = false;
+                        cntNumero = 0;
+                        lookingForCodigoAsignatura = true;
+                        stringBuilder = new StringBuilder();
+                    }
+                    if (lookingForCodigoAsignatura)
+                    {
+                        lookingForCodigoAsignatura = false;
+                        if (!codigoAsignatura.Contains(stringBuilder.ToString()))
+                        {
+                            res = false;
+                            break;
+                        }
+                        lookingForThreeLastDigits = true;
+                    }
+                    continue;
+                }else if (lookingRecinto)
+                {
+                    stringBuilder.Append(input[i]);
+                }else if (lookingForFirstNumero || lookingForSecondNumero)
+                {
+                    if(input[i] >= '0' && input[i] <= '9' && cntNumero < 4)
+                    {
+                        cntNumero++;
+                        continue;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForCodigoAsignatura)
+                {
+                    stringBuilder.Append(input[i]);
+                }else if (lookingForThreeLastDigits)
+                {
+                    if (input[i] >= '0' && input[i] <= '9' && cntNumero < 3)
+                    {
+                        cntNumero++;
+                        continue;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    res = false;
+                    break;
+                }
+            }
             return res;
         }
 
@@ -166,6 +242,106 @@ namespace Compromiso1
         {
             bool res = false;
 
+            bool lookingForCodigoArea = true;
+            bool lookingForNumeroV2 = false;
+            bool lookingForSeparator = false;
+            bool lookingForNumero = false;
+            int cntNumero = 0;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (lookingForCodigoArea)
+                {
+                    if (input[i] == '8')
+                    {
+                        i++;
+                        if (input[i] == '0' || input[i] == '2' || input[i] == '4')
+                        {
+                            i++;
+                            if (input[i] == '9')
+                            {
+                                lookingForCodigoArea = false;
+                                lookingForSeparator = true;
+                                continue;
+                            }
+                            else
+                            {
+                                res = false;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForSeparator)
+                {
+                    if(input[i] == '-')
+                    {
+                        if (lookingForNumeroV2)
+                        {
+                            lookingForNumeroV2 = false;
+                            lookingForNumero = true;
+                        }
+                        else
+                        {
+                            lookingForNumeroV2 = true;
+                        }
+                        cntNumero = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForNumeroV2)
+                {
+                    if (input[i] >= '0' && input[i] <= '9' && cntNumero < 3)
+                    {
+                        cntNumero++;
+                        if(cntNumero == 3)
+                        {
+                            lookingForSeparator = true;
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForNumero)
+                {
+                    if (input[i] >= '0' && input[i] <= '9' && cntNumero < 4)
+                    {
+                        cntNumero++;
+                        if (cntNumero == 4)
+                        {
+                            lookingForNumero = false;
+                            res = true;
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    res = false;
+                    break;
+                }
+            }
 
             return res;
         }
@@ -173,15 +349,180 @@ namespace Compromiso1
         public bool IsValidEmailAddress()
         {
             bool res = false;
-
-
+            bool lookingForLocalPart = true;
+            bool lookingForDomainPart = false;
+            bool firstCharDomainPart = false;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if(input[i] == '@')
+                {
+                    if (lookingForLocalPart)
+                    {
+                        lookingForLocalPart = false;
+                        lookingForDomainPart = true;
+                        firstCharDomainPart = true;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForLocalPart)
+                {
+                    if(!( (input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') || 
+                        (input[i] >= '0' && input[i] <= '9')))
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForDomainPart)
+                {
+                    if (firstCharDomainPart)
+                    {
+                        if ((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z'))
+                        {
+                            firstCharDomainPart = false;
+                            res = true;
+                            continue;
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    if (!((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') ||
+                        (input[i] >= '0' && input[i] <= '9')))
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    res = false;
+                    break;
+                }
+            }
             return res;
         }
         public bool IsValidURLAddress()
         {
-            bool res = false;
+            /* If an authority component is present, then the path component must either be empty 
+             * or begin with a slash(/).If an authority component is absent, then the path cannot 
+             * begin with an empty segment, that is with two slashes(//), as the following characters 
+             * would be interpreted as an authority component.
+            */
+           bool res = false;
+            
+            bool lookingForScheme = true;
+            bool firstCharScheme = true;
+            bool lookingForPathOrAuthorityComponent = false;
+            bool lookingForAuthorityComponent = true;
+            bool lookingForPath = true;
+            bool lookingForQuery = true;
+            bool lookingForFragment = true;
+            int cntSlash = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (lookingForScheme)
+                {
+                    if(input[i] == ':')
+                    {
+                        lookingForScheme = false;
+                        lookingForPathOrAuthorityComponent = true;
+                        continue;
+                    }
+                    if (firstCharScheme)
+                    {
+                        if ((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z'))
+                        {
+                            firstCharScheme = false;
+                            continue;
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    if (!((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') ||
+                        (input[i] >= '0' && input[i] <= '9')))
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if(lookingForPathOrAuthorityComponent)
+                {
+                    if(input[i] == '/')
+                    {
+                        cntSlash++;
+                    }
+                    else
+                    {
+                        // The rule mentioned at the beginning let us assume that 2 slashes
+                        // can be interpreted as an authority component.
+                        if (cntSlash == 2) 
+                        {
+                            lookingForAuthorityComponent = true;
+                            i --;
+                        }
+                        else if(cntSlash == 1)
+                        {
+                            lookingForPath = true;
+                            i--;
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                        lookingForPathOrAuthorityComponent = false;
+                    }
+                }else if (lookingForAuthorityComponent)
+                {
+                    if(input[i] == '/')
+                    {
+                        lookingForAuthorityComponent = false;
+                        lookingForPath = true;
+                        continue;
+                    }
+                }else if (lookingForPath)
+                {
+                    if(input[i] == '?')
+                    {
+                        lookingForPath = false;
+                        lookingForQuery = true;
+                        continue;
+                    }
+                    else if(input[i] == '#')
+                    {
+                        lookingForPath = false;
+                        lookingForFragment = true;
+                        continue;
+                    }
+                    else if (!((input[i] >= 'a' && input[i] <= 'z') || 
+                        (input[i] >= 'A' && input[i] <= 'Z') ||
+                        (input[i] >= '0' && input[i] <= '9') || input[i] == '/'))
+                    {
+                        res = false;
+                        break;
+                    }
+                }else if (lookingForQuery)
+                {
 
-
+                }else if (lookingForFragment)
+                {
+                    res = true;
+                    if (!((input[i] >= 'a' && input[i] <= 'z') ||
+                        (input[i] >= 'A' && input[i] <= 'Z') ||
+                        (input[i] >= '0' && input[i] <= '9')))
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+            }
             return res;
         }
     }
