@@ -11,6 +11,15 @@ namespace Compromiso1
         {
             this.input = input;
         }
+
+        bool isAlphanumeric(char e)
+        {
+            if (((e >= 'a' && e <= 'z') || (e >= 'A' && e <= 'Z') || (e >= '0' && e <= '9')))
+            {
+                return true;
+            }
+            return false;
+        }
         public bool IsValidMatriculationNumber()
         {
             bool res = false;
@@ -369,8 +378,7 @@ namespace Compromiso1
                     }
                 }else if (lookingForLocalPart)
                 {
-                    if(!( (input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') || 
-                        (input[i] >= '0' && input[i] <= '9')))
+                    if(!isAlphanumeric(input[i]))
                     {
                         res = false;
                         break;
@@ -391,8 +399,7 @@ namespace Compromiso1
                             break;
                         }
                     }
-                    if (!((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') ||
-                        (input[i] >= '0' && input[i] <= '9')))
+                    if (!isAlphanumeric(input[i]))
                     {
                         res = false;
                         break;
@@ -418,16 +425,25 @@ namespace Compromiso1
             bool lookingForScheme = true;
             bool firstCharScheme = true;
             bool lookingForPathOrAuthorityComponent = false;
-            bool lookingForAuthorityComponent = true;
-            bool lookingForPath = true;
-            bool lookingForQuery = true;
-            bool lookingForFragment = true;
-            int cntSlash = 0;
+            bool lookingForAuthorityComponent = false;
+            bool lookingForPath = false;
+            bool lookingForQuery = false;
+            bool lookingForFragment = false;
+            bool lookingForValueInQuery = false;
+            bool lookingForKeyInQuery = false;
+            bool keyFoundInQuery = false, valueFoundInQuery = false;
+            bool foundFirstAlphanumericInAuth = false;
+            bool foundFirstSeparatorInAuth = false;
+            bool lookingForAt = false;
+            bool lookingForAuthSecondPart = false;
+            bool foundSecondPartAlphanumericInAuth = false;
+            bool foundSecondSeparatorInAuth = false;
+            int cntSlash = 0, cntDigits = 0;
             for (int i = 0; i < input.Length; i++)
             {
                 if (lookingForScheme)
                 {
-                    if(input[i] == ':')
+                    if(input[i] == ':' && !firstCharScheme)
                     {
                         lookingForScheme = false;
                         lookingForPathOrAuthorityComponent = true;
@@ -446,8 +462,7 @@ namespace Compromiso1
                             break;
                         }
                     }
-                    if (!((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z') ||
-                        (input[i] >= '0' && input[i] <= '9')))
+                    if (!isAlphanumeric(input[i]))
                     {
                         res = false;
                         break;
@@ -483,9 +498,79 @@ namespace Compromiso1
                 {
                     if(input[i] == '/')
                     {
+                        if(lookingForAt || 
+                            /*cntDigits > 4 || cntDigits < 1 || */
+                            (lookingForAuthSecondPart && !foundSecondPartAlphanumericInAuth))
+                        {
+                            res = false;
+                            break;
+                        }
                         lookingForAuthorityComponent = false;
                         lookingForPath = true;
+                        res = true;
                         continue;
+                    }
+                    if (lookingForAuthSecondPart)
+                    {
+                        if (isAlphanumeric((input[i])))
+                        {
+                            foundSecondPartAlphanumericInAuth = true;
+                        }
+                        else if (input[i] == ':' && foundSecondPartAlphanumericInAuth
+                                    && !foundSecondSeparatorInAuth)
+                        {
+                            foundSecondSeparatorInAuth = true;
+                            cntDigits = 0;
+                        }else if(foundSecondSeparatorInAuth && input[i] >= '0' && input[i] <= '9')
+                        {
+                            cntDigits++;
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    else if (foundFirstSeparatorInAuth)
+                    {
+                        if (input[i] == '@')
+                        {
+                            lookingForAt = false;
+                            lookingForAuthSecondPart = true;
+                            foundFirstSeparatorInAuth = false;
+                            continue;
+                        }
+                        else if (isAlphanumeric((input[i])))
+                        {
+                            if (input[i] >= '0' && input[i] <= '9')
+                            {
+                                cntDigits++;
+                            }
+                            else
+                            {
+                                lookingForAt = true;
+                            }
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    else if (isAlphanumeric(input[i]))
+                    {
+                        foundFirstAlphanumericInAuth = true;
+                        continue;
+                    }
+                    else if (input[i] == ':' && foundFirstAlphanumericInAuth)
+                    {
+                        foundFirstSeparatorInAuth = true;
+                        continue;
+                    }
+                    else
+                    {
+                        res = false;
+                        break;
                     }
                 }else if (lookingForPath)
                 {
@@ -493,6 +578,8 @@ namespace Compromiso1
                     {
                         lookingForPath = false;
                         lookingForQuery = true;
+                        lookingForKeyInQuery = true;
+                        res = false;
                         continue;
                     }
                     else if(input[i] == '#')
@@ -501,26 +588,75 @@ namespace Compromiso1
                         lookingForFragment = true;
                         continue;
                     }
-                    else if (!((input[i] >= 'a' && input[i] <= 'z') || 
-                        (input[i] >= 'A' && input[i] <= 'Z') ||
-                        (input[i] >= '0' && input[i] <= '9') || input[i] == '/'))
+                    else if (isAlphanumeric(input[i]) || input[i] == '/')
+                    {
+                        res = true;
+                    }
+                    else
                     {
                         res = false;
                         break;
                     }
                 }else if (lookingForQuery)
                 {
-
-                }else if (lookingForFragment)
+                    if (input[i] == '=')
+                    {
+                        if (!(lookingForKeyInQuery && keyFoundInQuery))
+                        {
+                            res = false;
+                            break;
+                        }
+                        lookingForKeyInQuery = false;
+                        lookingForValueInQuery = true;
+                        valueFoundInQuery = false;
+                    }
+                    else if (input[i] == '&')
+                    {
+                        if (!(lookingForValueInQuery && valueFoundInQuery))
+                        {
+                            res = false;
+                            break;
+                        }
+                        
+                        lookingForKeyInQuery = true;
+                        keyFoundInQuery = false;
+                        lookingForValueInQuery = false;
+                    }
+                    else if (isAlphanumeric(input[i]))
+                    {
+                        if (lookingForKeyInQuery)
+                        {
+                            keyFoundInQuery = true;
+                        }else if (lookingForValueInQuery)
+                        {
+                            res = true;
+                            valueFoundInQuery = true;
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        res = false;
+                        break; 
+                    }
+                }
+                else if (lookingForFragment)
                 {
                     res = true;
-                    if (!((input[i] >= 'a' && input[i] <= 'z') ||
-                        (input[i] >= 'A' && input[i] <= 'Z') ||
-                        (input[i] >= '0' && input[i] <= '9')))
+                    if (!isAlphanumeric(input[i]))
                     {
                         res = false;
                         break;
                     }
+                }
+                else
+                {
+                    res = false;
+                    break;
                 }
             }
             return res;
