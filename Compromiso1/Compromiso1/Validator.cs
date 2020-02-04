@@ -149,7 +149,7 @@ namespace Compromiso1
         public bool IsValidPVASubjectCode()
         {
             bool res = false;
-            HashSet<string> recinto = new HashSet<string> { "CDS", "CSTI" };
+            HashSet<string> recinto = new HashSet<string> { "CSD", "CSTI" };
             HashSet<string> codigoAsignatura = new HashSet<string> { "ADH", "ADM", "ARQ", "ART", "BIO", "CDP", 
                 "CEDILE", "CHU", "CIED-HUMANO", "CITA", "CN", "CNT", "COM", "DEP", "DER", "DIG", "DIN", "EC", 
                 "EDN", "EDS", "EDU", "EEM", "EEN", "EGA", "EGC", "EGF", "EM", "EMM", "EOR", "ESA", "EST", "ET", 
@@ -182,21 +182,35 @@ namespace Compromiso1
                             break;
                         }
                         lookingForFirstNumero = true;
-                    }
-                    if (lookingForFirstNumero)
+                    }else if (lookingForFirstNumero)
                     {
-                        lookingForFirstNumero = false;
-                        cntNumero = 0;
-                        lookingForSecondNumero = true;
-                    }
-                    if (lookingForSecondNumero)
+                        if (cntNumero == 4)
+                        {
+                            lookingForFirstNumero = false;
+                            cntNumero = 0;
+                            lookingForSecondNumero = true;
+                            stringBuilder = new StringBuilder();
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
+                    }else if (lookingForSecondNumero)
                     {
-                        lookingForSecondNumero = false;
-                        cntNumero = 0;
-                        lookingForCodigoAsignatura = true;
-                        stringBuilder = new StringBuilder();
+                        if (cntNumero == 4)
+                        {
+                            lookingForSecondNumero = false;
+                            cntNumero = 0;
+                            lookingForCodigoAsignatura = true;
+                        }
+                        else
+                        {
+                            res = false;
+                            break;
+                        }
                     }
-                    if (lookingForCodigoAsignatura)
+                    else if (lookingForCodigoAsignatura)
                     {
                         lookingForCodigoAsignatura = false;
                         if (!codigoAsignatura.Contains(stringBuilder.ToString()))
@@ -206,7 +220,11 @@ namespace Compromiso1
                         }
                         lookingForThreeLastDigits = true;
                     }
-                    continue;
+                    else
+                    {
+                        res = false;
+                        break;
+                    }
                 }else if (lookingRecinto)
                 {
                     stringBuilder.Append(input[i]);
@@ -230,6 +248,11 @@ namespace Compromiso1
                     if (input[i] >= '0' && input[i] <= '9' && cntNumero < 3)
                     {
                         cntNumero++;
+                        if(cntNumero == 3)
+                        {
+                            lookingForThreeLastDigits = false;
+                            res = true;
+                        }
                         continue;
                     }
                     else
@@ -303,6 +326,7 @@ namespace Compromiso1
                         {
                             lookingForNumeroV2 = true;
                         }
+                        lookingForSeparator = false;
                         cntNumero = 0;
                         continue;
                     }
@@ -358,6 +382,7 @@ namespace Compromiso1
         public bool IsValidEmailAddress()
         {
             bool res = false;
+            bool foundLocalPart = false;
             bool lookingForLocalPart = true;
             bool lookingForDomainPart = false;
             bool firstCharDomainPart = false;
@@ -365,7 +390,7 @@ namespace Compromiso1
             {
                 if(input[i] == '@')
                 {
-                    if (lookingForLocalPart)
+                    if (lookingForLocalPart && foundLocalPart)
                     {
                         lookingForLocalPart = false;
                         lookingForDomainPart = true;
@@ -378,12 +403,14 @@ namespace Compromiso1
                     }
                 }else if (lookingForLocalPart)
                 {
-                    if(!isAlphanumeric(input[i]))
+                    if (!isAlphanumeric(input[i]))
                     {
                         res = false;
                         break;
                     }
-                }else if (lookingForDomainPart)
+                    foundLocalPart = true;
+                }
+                else if (lookingForDomainPart)
                 {
                     if (firstCharDomainPart)
                     {

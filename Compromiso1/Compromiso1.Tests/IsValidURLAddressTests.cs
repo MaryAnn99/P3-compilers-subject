@@ -11,10 +11,8 @@ namespace Compromiso1.Tests
     public class IsValidURLAddressTests
     {
         [SetUp]
-        public void Setup()
-        {
+        public void Setup() { }
 
-        }
         [Test]
         public void WhenEmptyStringReturnFalse()
         {
@@ -33,6 +31,7 @@ namespace Compromiso1.Tests
             bool expected = true;
             Assert.IsTrue((output == expected));
         }
+
         [Test]
         public void When2()
         {
@@ -51,6 +50,7 @@ namespace Compromiso1.Tests
             bool expected = false;
             Assert.IsTrue((output == expected));
         }
+
         [Test]
         public void When4()
         {
@@ -136,6 +136,24 @@ namespace Compromiso1.Tests
         public void When13()
         {
             string input = "https://amazon/";
+            Validator validator = new Validator(input);
+            bool output = validator.IsValidURLAddress();
+            bool expected = true;
+            Assert.IsTrue((output == expected));
+        }
+        [Test]
+        public void When14()
+        {
+            string input = "https://amazon/#";
+            Validator validator = new Validator(input);
+            bool output = validator.IsValidURLAddress();
+            bool expected = true;
+            Assert.IsTrue((output == expected));
+        }
+        [Test]
+        public void When15()
+        {
+            string input = "https://userinfo:@amazon:1/#";
             Validator validator = new Validator(input);
             bool output = validator.IsValidURLAddress();
             bool expected = true;
