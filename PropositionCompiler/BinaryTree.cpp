@@ -1,5 +1,6 @@
 #include "node.h"
 #include "BinaryTree.h"
+using namespace std;
 
 btree::btree(){
 	root = new node;
@@ -65,28 +66,24 @@ void btree::all(node* actual,std::vector<char>&letras){
     }
 }
 
-bool btree::value(node* actual){
+bool btree::value(node* actual, std::vector<bool> valuesForVariables){
     std::vector<char> letras;
     auto copy = actual;
 
     all(actual,letras);
 
     for(char i: letras){
-        bool x;
-        std::cout << "Valor de verdad para "<< i<< std::endl;
-        std::cin >> x;
-        alf[i-'a'] = x;
+        alf[i-'a'] = valuesForVariables[i-'a'];
     }
     return evaluate(copy);
 }
 
 bool btree::evaluate(node* actual){
-    std::cout << actual->value << std::endl;
     if(actual->value >= 'a' && actual->value <='z'){
         return alf[actual->value-'a'];
     }
     else if(actual->value == '~'){
-        return !alf[actual->right->value-'a'];
+        return !alf[actual->left->value-'a'];
     }
     else{
         bool prop1 = evaluate(actual->left);

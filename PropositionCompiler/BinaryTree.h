@@ -3,7 +3,9 @@
 
 
 #include "node.h"
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#include <vector>
+
 
 class btree{
 public:
@@ -13,14 +15,13 @@ public:
 	void insert(int key);
 	node* search(int key);
 	void destroy_tree();
-    bool value(node* actual);
-
+    bool value(node* actual, std::vector<bool> valuesForVariables);
+    void all(node* actual,std::vector<char>&letras);
 	node *root;
     std::bitset<27>alf;
 
 private:
     bool evaluate(node* actual);
-    void all(node* actual,std::vector<char>&letras);
 	void destroy_tree(node *leaf);
 	void insert(int key, node *leaf);
 	node *search(int key, node *leaf);

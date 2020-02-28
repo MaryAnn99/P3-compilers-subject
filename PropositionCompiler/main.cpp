@@ -12,9 +12,44 @@
 
 using namespace std;
 
-int main()//(int argc, char **argv)
+void allPossibleTruthValues(btree*);
+void inputTruthValue(btree*);
+
+void inputTruthValue(btree* syntaxTree){
+    vector<char> characters;
+    syntaxTree->all(syntaxTree->root,characters);
+    cout << "Ingrese los valores de verdad para las variables: " << endl;
+    vector<bool> truthValues(28);
+    for(int i = 0; i < characters.size(); i++){
+        cout << characters[i] << " : ";
+        bool truthValue;
+        cin >> truthValue;
+        truthValues[characters[i] - 'a'] = truthValue;
+    }
+    cout << "El resultado de evaluar la expresion es: ";
+    cout << syntaxTree->value(syntaxTree->root, truthValues) << endl << endl;
+}
+
+void allPossibleTruthValues(btree* syntaxTree){
+    cout << "------------------------------------------------------------------------" << endl;
+    cout << "Resultados para todos los posibles valores de verdad de las variables: " << endl;
+    vector<char> characters;
+    syntaxTree->all(syntaxTree->root,characters);
+    for(int x = 0; x < pow(2, characters.size()); x++){
+       cout << endl;
+       vector<bool> truthValues(28, 0);
+       for(int i = 0; i < characters.size(); i++){
+           truthValues[characters[i] - 'a'] = (x & (1<<i));
+           cout << characters[i] << " : " << truthValues[characters[i] - 'a'] << endl;
+       }
+       cout << "El resultado de evaluar la expresion es: ";
+       cout << syntaxTree->value(syntaxTree->root, truthValues) << endl;
+   }
+}
+
+int main()
 {
-    string input; //= string(argv[1]);
+    string input;
     getline(cin, input);
     split(input);
     if(!lexer()){
@@ -23,10 +58,8 @@ int main()//(int argc, char **argv)
         /// TODO LexicalError();
     }
     btree* syntaxTree = parse();
-    cout << "Result for assigned values: " << syntaxTree->value(syntaxTree->root) << endl;
-
-    /// TODO allPosibleTruthValues(syntaxTree);
-
+    inputTruthValue(syntaxTree);
+    allPossibleTruthValues(syntaxTree);
     syntaxTree->destroy_tree();
     return 0;
 }

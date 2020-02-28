@@ -67,16 +67,17 @@
 	"BinaryTree.h"
 	"parser.h"
 
-1582840792 source:c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\binarytree.cpp
+1582856090 source:c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\binarytree.cpp
 	"node.h"
 	"BinaryTree.h"
 
 1582840817 c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\node.h
 	<cstddef>
 
-1582840775 c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\binarytree.h
+1582855095 c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\binarytree.h
 	"node.h"
 	<bits/stdc++.h>
+	<vector>
 
 1582843957 source:c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\lexer.cpp
 	<stdio.h>
@@ -102,7 +103,7 @@
 	<map>
 	<list>
 
-1582844328 source:c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\main.cpp
+1582855793 source:c:\users\marid\onedrive\escritorio\p3-compilers-subject\propositioncompiler\main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
