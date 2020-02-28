@@ -56,13 +56,17 @@ void btree::destroy_tree(){
 	destroy_tree(root);
 }
 
-void btree::all(node* actual,std::vector<char>&letras){
+void btree::all(node* actual, std::vector<char>&letras){
     if(actual->value >= 'a' && actual->value <='z'){
         letras.emplace_back(actual->value);
     }
     else{
-        if(actual->left!= NULL) all(actual->left, letras);
-        if(actual->right!= NULL) all(actual->right, letras);
+        if(actual->left!= NULL){
+            all(actual->left, letras);
+        }
+        if(actual->right!= NULL){
+            all(actual->right, letras);
+        }
     }
 }
 

@@ -17,7 +17,7 @@ void inputTruthValue(btree*);
 
 void inputTruthValue(btree* syntaxTree){
     vector<char> characters;
-    syntaxTree->all(syntaxTree->root,characters);
+    syntaxTree->all(syntaxTree->root, characters);
     cout << "Ingrese los valores de verdad para las variables: " << endl;
     vector<bool> truthValues(28);
     for(int i = 0; i < characters.size(); i++){
@@ -53,11 +53,19 @@ int main()
     getline(cin, input);
     split(input);
     if(!lexer()){
-        cout << "Hubo un error lexico" << endl;
-        return 0;
-        /// TODO LexicalError();
+        cout << "Ocurrio un Error lexico" << endl;
+        return EXIT_FAILURE;
     }
-    btree* syntaxTree = parse();
+    btree* syntaxTree;
+    try
+    {
+        syntaxTree = parse();
+    }
+    catch(const std::exception&)
+    {
+        cout << "Ocurrio un Error Sintáctico" << endl;
+        return EXIT_FAILURE;
+    }
     inputTruthValue(syntaxTree);
     allPossibleTruthValues(syntaxTree);
     syntaxTree->destroy_tree();

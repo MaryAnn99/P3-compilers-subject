@@ -8,7 +8,7 @@ extern char token;
 extern void getToken();
 
 void syntaxError() {
-   cout << "ha ocurrido un error" << endl; /// TODO error handler.
+   throw std::exception();
 }
 
 void match(char expectedToken) {
@@ -36,6 +36,7 @@ node* prop() {
       t->value = token;
       match('~');
       t->left = atom();
+      t->right = NULL;
    }else{
      t = atom();
    }
@@ -85,7 +86,7 @@ btree* parse(){
     btree* syntaxTree = new btree;
     getToken();
     syntaxTree->root = stm();
-    if(token != ' '){ /// TODO, token != END of FILE
+    if(token != ' '){
         syntaxError();
     }
     return syntaxTree;
